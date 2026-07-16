@@ -1,0 +1,17 @@
+{
+  "name": "BizTurizm — O'zbekiston sayohat platformasi",
+  "short_name": "BizTurizm",
+  "description": "AI yordamchisi bilan O'zbekiston bo'ylab oshxona, mehmonxona, ziyoratgoh va maskanlarni toping.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#108d5e",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
