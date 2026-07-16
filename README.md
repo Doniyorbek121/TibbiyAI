@@ -17,6 +17,16 @@ O'zbekistonga kengaytiriladigan tuzilmaga ega.
 - **Foydalanuvchi web + mobil** — bitta responsiv PWA. Telefonga "ilova" sifatida o'rnatish mumkin.
 - **Sevimlilar** — yoqtirgan joylarni yurakcha bilan saqlash. Ular alohida sahifada ko'rinadi
   va brauzerda (localStorage) saqlanadi.
+- **21 tilli interfeys** — o'zbek, rus, ingliz, xitoy, arab, turk, qozoq, tojik, yapon, nemis,
+  fransuz, ispan, koreys, fors, hind, italyan, portugal, qirg'iz, turkman, ozarbayjon, ukrain.
+  Arab va fors uchun **RTL** (o'ngdan chapga) qo'llab-quvvatlanadi. Til brauzerda saqlanadi.
+- **Avtomatik kontent tarjimasi** — admin o'zbekcha qo'shgan joylar, tavsiflar, hudud/tuman nomlari
+  foydalanuvchi tanlagan tilga **Gemini AI** orqali avtomatik tarjima qilinadi va keshlanadi
+  (kalit bo'lmasa asl matn ko'rsatiladi).
+- **Ovozli tarjimon** (`/tarjimon`) — 21 til orasida tarjima. Mikrofon orqali **gapirib**
+  kiritish (nutqdan matnga) va natijani **ovoz bilan** eshitish (matndan nutqqa). Masalan
+  o'zbekcha "salom" desangiz, koreyscha "안녕하세요" deb ovozda gapiradi. Kalitsiz ham keng
+  tarqalgan iboralar (oflayn lug'at) ishlaydi.
 - **Admin panel** — joylarni qo'shish / tahrirlash / o'chirish, statistika, Gemini sozlamalari.
 - **Kategoriyalar** — oshxona, mehmonxona, ziyoratgoh, tarixiy joylar, tabiat,
   hunarmandchilik, dam olish, xaridlar.
@@ -77,11 +87,13 @@ VITE_GEMINI_MODEL=gemini-2.0-flash
 
 ```
 src/
-├── components/       # Navbar, Footer, PlaceCard, RatingStars
-├── context/          # DataContext — joylar, sozlamalar, admin holati
+├── components/       # Navbar, Footer, PlaceCard, RatingStars, LanguageSwitcher
+├── context/          # DataContext (joylar, sozlamalar), I18nContext (til, t())
 ├── data/             # seedPlaces.ts — Chust tumani boshlang'ich ma'lumotlari
-├── lib/              # types, categories, gemini, storage, utils
-├── pages/            # Home, Explore, PlaceDetail, Assistant, NotFound
+├── hooks/            # useAutoTranslate — joylarni avtomatik tarjima qilish
+├── i18n/             # 21 til fayli (locales/), types, languages, translator
+├── lib/              # types, categories, gemini, storage, translate, speech, utils
+├── pages/            # Home, Explore, PlaceDetail, Assistant, Favorites, Translator
 │   └── admin/        # Login, Dashboard, Places, PlaceForm, Settings
 ├── App.tsx           # Routing
 └── main.tsx          # Kirish nuqtasi
@@ -92,4 +104,4 @@ src/
 - Butun O'zbekiston bo'yicha viloyat/tuman tanlash
 - Backend (autentifikatsiya, ma'lumotlar bazasi, rasm yuklash)
 - Foydalanuvchi sharhlari va reytinglari
-- Ko'p tillilik (o'zbek / rus / ingliz)
+- Ovozli tarjimon uchun qo'shimcha oflayn lug'at (kalitsiz kengroq qamrov)

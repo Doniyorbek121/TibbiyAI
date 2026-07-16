@@ -2,20 +2,22 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Sparkles, Search, MapPin, ArrowRight } from "lucide-react";
 import { useData } from "../context/DataContext";
+import { useI18n } from "../context/I18nContext";
 import { CATEGORIES } from "../lib/categories";
 import { PlaceCard } from "../components/PlaceCard";
 
-const QUICK_PROMPTS = [
-  "Menga oshxona kerak",
-  "Ziyoratgoh joylar",
-  "Arzon mehmonxona",
-  "Chust pichog'i qayerdan olsam bo'ladi?",
-];
-
 export default function Home() {
   const { places } = useData();
+  const { t, tc } = useI18n();
   const navigate = useNavigate();
   const [q, setQ] = useState("");
+
+  const quickPrompts = [
+    t("homeQuick1"),
+    t("homeQuick2"),
+    t("homeQuick3"),
+    t("homeQuick4"),
+  ];
 
   const featured = places.filter((p) => p.featured).slice(0, 6);
   const goAssistant = (query: string) =>
@@ -29,15 +31,12 @@ export default function Home() {
         <div className="container-app relative py-16 sm:py-20">
           <div className="mx-auto max-w-3xl text-center">
             <span className="chip mx-auto border-white/30 bg-white/10 text-white">
-              <Sparkles size={14} /> Gemini AI bilan ishlaydi
+              <Sparkles size={14} /> {t("homeHeroBadge")}
             </span>
             <h1 className="mt-5 text-4xl font-extrabold leading-tight sm:text-5xl">
-              O'zbekistonni AI yordamchisi bilan kashf eting
+              {t("homeHeroTitle")}
             </h1>
-            <p className="mt-4 text-lg text-brand-50">
-              Oshxona, mehmonxona, ziyoratgoh yoki sayohat maskani kerakmi?
-              Shunchaki so'rang — rasmi, manzili va lokatsiyasi bilan tavsiya qilamiz.
-            </p>
+            <p className="mt-4 text-lg text-brand-50">{t("homeHeroSubtitle")}</p>
 
             <form
               onSubmit={(e) => {
@@ -46,20 +45,20 @@ export default function Home() {
               }}
               className="mx-auto mt-7 flex max-w-xl items-center gap-2 rounded-2xl bg-white p-2 shadow-soft"
             >
-              <Search className="ml-2 text-slate-400" size={20} />
+              <Search className="ml-2 shrink-0 text-slate-400" size={20} />
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Masalan: menga milliy taomlar oshxonasi kerak..."
+                placeholder={t("homeSearchPlaceholder")}
                 className="flex-1 bg-transparent px-1 py-2 text-slate-800 outline-none placeholder:text-slate-400"
               />
-              <button type="submit" className="btn-primary">
-                So'rash
+              <button type="submit" className="btn-primary shrink-0">
+                {t("homeAskBtn")}
               </button>
             </form>
 
             <div className="mt-4 flex flex-wrap justify-center gap-2">
-              {QUICK_PROMPTS.map((p) => (
+              {quickPrompts.map((p) => (
                 <button
                   key={p}
                   onClick={() => goAssistant(p)}
@@ -75,13 +74,13 @@ export default function Home() {
 
       {/* KATEGORIYALAR */}
       <section className="container-app py-14">
-        <div className="flex items-end justify-between">
+        <div className="flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900">Kategoriyalar</h2>
-            <p className="mt-1 text-slate-500">Nima izlayotganingizni tanlang</p>
+            <h2 className="text-2xl font-bold text-slate-900">{t("homeCatsTitle")}</h2>
+            <p className="mt-1 text-slate-500">{t("homeCatsSubtitle")}</p>
           </div>
-          <Link to="/kashf" className="hidden text-sm font-semibold text-brand-700 hover:underline sm:inline">
-            Hammasi →
+          <Link to="/kashf" className="hidden shrink-0 text-sm font-semibold text-brand-700 hover:underline sm:inline">
+            {t("homeSeeAll")}
           </Link>
         </div>
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -92,8 +91,8 @@ export default function Home() {
               className="card group flex flex-col gap-2 p-5 transition hover:-translate-y-1 hover:shadow-soft"
             >
               <span className="text-3xl">{c.emoji}</span>
-              <span className="font-semibold text-slate-900">{c.name}</span>
-              <span className="text-xs text-slate-500 line-clamp-2">{c.description}</span>
+              <span className="font-semibold text-slate-900">{tc(c.id).name}</span>
+              <span className="text-xs text-slate-500 line-clamp-2">{tc(c.id).description}</span>
             </Link>
           ))}
         </div>
@@ -101,15 +100,15 @@ export default function Home() {
 
       {/* TAVSIYA ETILGAN */}
       <section className="container-app pb-4">
-        <div className="flex items-end justify-between">
+        <div className="flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900">Tavsiya etilgan maskanlar</h2>
+            <h2 className="text-2xl font-bold text-slate-900">{t("homeFeaturedTitle")}</h2>
             <p className="mt-1 flex items-center gap-1 text-slate-500">
-              <MapPin size={14} /> Chust tumani, Namangan
+              <MapPin size={14} className="shrink-0" /> {t("homeFeaturedRegion")}
             </p>
           </div>
-          <Link to="/kashf" className="text-sm font-semibold text-brand-700 hover:underline">
-            Barchasi →
+          <Link to="/kashf" className="shrink-0 text-sm font-semibold text-brand-700 hover:underline">
+            {t("homeAllLink")}
           </Link>
         </div>
         <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -125,13 +124,10 @@ export default function Home() {
           <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-500">
             <Sparkles size={26} />
           </span>
-          <h2 className="text-2xl font-bold sm:text-3xl">Aniq nima kerakligini bilmaysizmi?</h2>
-          <p className="max-w-xl text-slate-300">
-            AI yordamchimizga oddiy tilda savol bering — "kechqurun oilam bilan
-            dam olsak bo'ladigan joy" desangiz ham, sizga eng mos variantlarni topib beradi.
-          </p>
+          <h2 className="text-2xl font-bold sm:text-3xl">{t("homeCtaTitle")}</h2>
+          <p className="max-w-xl text-slate-300">{t("homeCtaText")}</p>
           <Link to="/yordamchi" className="btn-primary">
-            AI yordamchini ochish <ArrowRight size={18} />
+            {t("homeCtaBtn")} <ArrowRight size={18} />
           </Link>
         </div>
       </section>

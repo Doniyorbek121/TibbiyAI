@@ -7,6 +7,7 @@ import Explore from "./pages/Explore";
 import PlaceDetail from "./pages/PlaceDetail";
 import Assistant from "./pages/Assistant";
 import Favorites from "./pages/Favorites";
+import Translator from "./pages/Translator";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/kashf" element={<Explore />} />
           <Route path="/joy/:id" element={<PlaceDetail />} />
           <Route path="/yordamchi" element={<Assistant />} />
+          <Route path="/tarjimon" element={<Translator />} />
           <Route path="/sevimli" element={<Favorites />} />
 
           {/* Admin */}
