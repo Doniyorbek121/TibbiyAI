@@ -15,6 +15,8 @@ O'zbekistonga kengaytiriladigan tuzilmaga ega.
 - **AI Yordamchi (chat)** — Gemini AI bilan integratsiya. Savolga qarab joylarni tavsiya qiladi.
   API kaliti bo'lmasa ham, o'rnatilgan **oddiy qidiruv (fallback)** ishlaydi.
 - **Foydalanuvchi web + mobil** — bitta responsiv PWA. Telefonga "ilova" sifatida o'rnatish mumkin.
+- **Sevimlilar** — yoqtirgan joylarni yurakcha bilan saqlash. Ular alohida sahifada ko'rinadi
+  va brauzerda (localStorage) saqlanadi.
 - **Admin panel** — joylarni qo'shish / tahrirlash / o'chirish, statistika, Gemini sozlamalari.
 - **Kategoriyalar** — oshxona, mehmonxona, ziyoratgoh, tarixiy joylar, tabiat,
   hunarmandchilik, dam olish, xaridlar.
@@ -90,5 +92,4 @@ src/
 - Butun O'zbekiston bo'yicha viloyat/tuman tanlash
 - Backend (autentifikatsiya, ma'lumotlar bazasi, rasm yuklash)
 - Foydalanuvchi sharhlari va reytinglari
-- Sevimlilar / saqlangan joylar
 - Ko'p tillilik (o'zbek / rus / ingliz)

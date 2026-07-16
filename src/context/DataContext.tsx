@@ -15,6 +15,8 @@ import {
   saveSettings,
   type AppSettings,
   isAdmin as checkAdmin,
+  loadFavorites,
+  saveFavorites,
 } from "../lib/storage";
 
 interface DataContextValue {
@@ -28,6 +30,11 @@ interface DataContextValue {
   settings: AppSettings;
   updateSettings: (s: AppSettings) => void;
 
+  favorites: string[];
+  favoritePlaces: Place[];
+  isFavorite: (id: string) => boolean;
+  toggleFavorite: (id: string) => void;
+
   admin: boolean;
   setAdmin: (v: boolean) => void;
 }
@@ -38,10 +45,15 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [places, setPlaces] = useState<Place[]>(() => loadPlaces());
   const [settings, setSettings] = useState<AppSettings>(() => loadSettings());
   const [admin, setAdmin] = useState<boolean>(() => checkAdmin());
+  const [favorites, setFavorites] = useState<string[]>(() => loadFavorites());
 
   useEffect(() => {
     savePlaces(places);
   }, [places]);
+
+  useEffect(() => {
+    saveFavorites(favorites);
+  }, [favorites]);
 
   const value = useMemo<DataContextValue>(
     () => ({
@@ -59,10 +71,20 @@ export function DataProvider({ children }: { children: ReactNode }) {
         saveSettings(s);
       },
 
+      favorites,
+      favoritePlaces: favorites
+        .map((id) => places.find((p) => p.id === id))
+        .filter((p): p is Place => Boolean(p)),
+      isFavorite: (id) => favorites.includes(id),
+      toggleFavorite: (id) =>
+        setFavorites((prev) =>
+          prev.includes(id) ? prev.filter((x) => x !== id) : [id, ...prev]
+        ),
+
       admin,
       setAdmin,
     }),
-    [places, settings, admin]
+    [places, settings, admin, favorites]
   );
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

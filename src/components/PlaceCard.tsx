@@ -1,11 +1,22 @@
+import type { MouseEvent } from "react";
 import { Link } from "react-router-dom";
-import { MapPin } from "lucide-react";
+import { MapPin, Heart } from "lucide-react";
 import type { Place } from "../lib/types";
 import { categoryEmoji, categoryName } from "../lib/categories";
-import { priceLabel } from "../lib/utils";
+import { priceLabel, cn } from "../lib/utils";
+import { useData } from "../context/DataContext";
 import { RatingStars } from "./RatingStars";
 
 export function PlaceCard({ place }: { place: Place }) {
+  const { isFavorite, toggleFavorite } = useData();
+  const favorite = isFavorite(place.id);
+
+  const handleFavorite = (e: MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(place.id);
+  };
+
   return (
     <Link
       to={`/joy/${place.id}`}
@@ -26,6 +37,18 @@ export function PlaceCard({ place }: { place: Place }) {
             ⭐ Tavsiya
           </span>
         )}
+        <button
+          type="button"
+          onClick={handleFavorite}
+          aria-label={favorite ? "Sevimlilardan olib tashlash" : "Sevimlilarga qo'shish"}
+          aria-pressed={favorite}
+          className={cn(
+            "absolute bottom-3 right-3 grid h-9 w-9 place-items-center rounded-full bg-white/90 shadow-sm backdrop-blur transition hover:scale-110",
+            favorite ? "text-rose-500" : "text-slate-400 hover:text-rose-500"
+          )}
+        >
+          <Heart size={18} fill={favorite ? "currentColor" : "none"} />
+        </button>
       </div>
       <div className="p-4">
         <div className="flex items-start justify-between gap-2">

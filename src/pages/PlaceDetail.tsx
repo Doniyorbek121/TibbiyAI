@@ -7,17 +7,19 @@ import {
   Navigation,
   Tag,
   Sparkles,
+  Heart,
 } from "lucide-react";
 import { useData } from "../context/DataContext";
 import { categoryEmoji, categoryName } from "../lib/categories";
-import { priceLabel, mapsUrl, mapsDirectionsUrl } from "../lib/utils";
+import { priceLabel, mapsUrl, mapsDirectionsUrl, cn } from "../lib/utils";
 import { RatingStars } from "../components/RatingStars";
 import { PlaceCard } from "../components/PlaceCard";
 
 export default function PlaceDetail() {
   const { id } = useParams();
-  const { getPlace, places } = useData();
+  const { getPlace, places, isFavorite, toggleFavorite } = useData();
   const place = id ? getPlace(id) : undefined;
+  const favorite = place ? isFavorite(place.id) : false;
 
   if (!place) {
     return (
@@ -134,6 +136,21 @@ export default function PlaceDetail() {
               <MapPin size={18} /> Xaritada ko'rish
             </a>
           </div>
+
+          <button
+            type="button"
+            onClick={() => toggleFavorite(place.id)}
+            aria-pressed={favorite}
+            className={cn(
+              "btn mt-2 w-full border",
+              favorite
+                ? "border-rose-200 bg-rose-50 text-rose-600 hover:bg-rose-100"
+                : "border-slate-200 bg-white text-slate-700 hover:border-rose-300 hover:text-rose-600"
+            )}
+          >
+            <Heart size={18} fill={favorite ? "currentColor" : "none"} />
+            {favorite ? "Sevimlilarda" : "Sevimlilarga qo'shish"}
+          </button>
 
           <Link
             to={`/yordamchi?q=${encodeURIComponent(place.name + " kabi joylar")}`}

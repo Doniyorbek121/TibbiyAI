@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X, Sparkles, Compass, Home, ShieldCheck } from "lucide-react";
+import { Menu, X, Sparkles, Compass, Home, ShieldCheck, Heart } from "lucide-react";
 import { cn } from "../lib/utils";
+import { useData } from "../context/DataContext";
 
 const NAV = [
   { to: "/", label: "Bosh sahifa", icon: Home, end: true },
   { to: "/kashf", label: "Kashf etish", icon: Compass },
   { to: "/yordamchi", label: "AI Yordamchi", icon: Sparkles },
+  { to: "/sevimli", label: "Sevimlilar", icon: Heart },
 ];
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { favorites } = useData();
+  const favCount = favorites.length;
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-100 bg-white/80 backdrop-blur">
@@ -42,6 +46,11 @@ export function Navbar() {
             >
               <item.icon size={16} />
               {item.label}
+              {item.to === "/sevimli" && favCount > 0 && (
+                <span className="grid h-5 min-w-5 place-items-center rounded-full bg-rose-500 px-1 text-[11px] font-bold text-white">
+                  {favCount}
+                </span>
+              )}
             </NavLink>
           ))}
           <Link to="/admin" className="btn-outline ml-2">
@@ -76,6 +85,11 @@ export function Navbar() {
               >
                 <item.icon size={18} />
                 {item.label}
+                {item.to === "/sevimli" && favCount > 0 && (
+                  <span className="grid h-5 min-w-5 place-items-center rounded-full bg-rose-500 px-1 text-[11px] font-bold text-white">
+                    {favCount}
+                  </span>
+                )}
               </NavLink>
             ))}
             <Link
