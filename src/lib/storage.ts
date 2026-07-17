@@ -4,6 +4,7 @@ import { SEED_PLACES } from "../data/seedPlaces";
 const PLACES_KEY = "bizturizm.places.v1";
 const SETTINGS_KEY = "bizturizm.settings.v1";
 const ADMIN_KEY = "bizturizm.admin.v1";
+const FAVORITES_KEY = "bizturizm.favorites.v1";
 
 export interface AppSettings {
   geminiApiKey: string;
@@ -51,6 +52,22 @@ export function loadSettings(): AppSettings {
 
 export function saveSettings(settings: AppSettings): void {
   localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+}
+
+// ————— Sevimlilar (saqlangan joylar) —————
+export function loadFavorites(): string[] {
+  try {
+    const raw = localStorage.getItem(FAVORITES_KEY);
+    if (!raw) return [];
+    const list = JSON.parse(raw);
+    return Array.isArray(list) ? (list as string[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveFavorites(ids: string[]): void {
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(ids));
 }
 
 // ————— Admin sessiya (oddiy demo autentifikatsiya) —————

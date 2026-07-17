@@ -24,28 +24,31 @@ function buildPlacesContext(places: Place[]): string {
     .join("\n");
 }
 
-const SYSTEM_PROMPT = `Sen "BizTurizm" — O'zbekiston bo'yicha sayohat yordamchisisan.
-Foydalanuvchi o'zbek tilida biror joy so'raydi (masalan: oshxona, mehmonxona, ziyoratgoh, tabiat, hunarmandchilik, xaridlar va h.k.).
+function systemPrompt(replyLanguage: string): string {
+  return `Sen "BizTurizm" — O'zbekiston bo'yicha sayohat yordamchisisan.
+Foydalanuvchi biror joy so'raydi (masalan: oshxona, mehmonxona, ziyoratgoh, tabiat, hunarmandchilik, xaridlar va h.k.).
 Quyida bazadagi joylar ro'yxati beriladi. Faqat shu ro'yxatdagi joylardan foydalanuvchi so'roviga eng mos keladiganlarini tanla.
 Muhim qoidalar:
 1. Faqat berilgan ro'yxatdagi id larni ishlat. O'zingdan joy o'ylab topma.
 2. Agar mos joy bo'lmasa, placeIds bo'sh bo'lsin va reply da chiroyli tarzda tushuntir.
-3. reply — do'stona, qisqa (2-4 gap), o'zbek tilida bo'lsin. Kartochkalar alohida ko'rsatiladi, shuning uchun reply da har bir joyni batafsil sanab o'tirma.
+3. reply — do'stona, qisqa (2-4 gap) va ALBATTA "${replyLanguage}" tilida bo'lsin. Kartochkalar alohida ko'rsatiladi, shuning uchun reply da har bir joyni batafsil sanab o'tirma.
 4. Javobni QAT'IY JSON formatida ber, boshqa hech narsa yozma:
 {"reply": "...", "placeIds": ["id1","id2"]}`;
+}
 
 export async function askGemini(
   userQuery: string,
   places: Place[],
   apiKey: string,
-  model: string
+  model: string,
+  replyLanguage = "o'zbek"
 ): Promise<GeminiResult> {
   if (!apiKey) {
     throw new Error("NO_API_KEY");
   }
 
   const context = buildPlacesContext(places);
-  const prompt = `${SYSTEM_PROMPT}
+  const prompt = `${systemPrompt(replyLanguage)}
 
 BAZADAGI JOYLAR:
 ${context}
